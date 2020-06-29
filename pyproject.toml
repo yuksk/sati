@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "sati"
+version = "1.0.0"
+description = "Statistical analysis of topographic image"
+authors = ["Yuhki Kohsaka <yuhki.kohsaka@gmail.com>"]
+license = "MIT"
+readme = "README.rst"
+repository = "https://github.com/yuksk/sati/"
+documentation = "https://yuksk.github.io/sati/index.html"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1.18.0"
+scipy = "^1.5.0"
+matplotlib = "^3.3.1"
+numexpr = "^2.7.1"
+
+[tool.poetry.dev-dependencies]
+coverage = {extras = ["toml"], version = "^5.2"}
+Sphinx = "^3.1.2"
+sphinx-rtd-theme = "^0.5.0"
+
+[tool.coverage.run]
+source = ["sati"]
+
+[tool.coverage.report]
+exclude_lines = ["except KeyboardInterrupt:"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

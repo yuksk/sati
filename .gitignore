@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+
+# coverage
+.coverage*
+htmlcov/
+
+# poetry
+poetry.lock
+dist/
+
+# sphinx
+docs/build/
