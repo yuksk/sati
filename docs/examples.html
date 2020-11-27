@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Examples &mdash; sati  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API documentation" href="api.html" />
+    <link rel="prev" title="Sati" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> sati
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#guess-initial-responsibility">Guess initial responsibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subtract-a-linear-plane">Subtract a linear plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subtract-decays">Subtract decays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-a-previous-result-as-an-initial-value">Use a previous result as an initial value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#estimate-a-unit-height-of-steps">Estimate a unit height of steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#save-interim-result">Save interim result</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sati</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Examples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="guess-initial-responsibility">
+<h2>Guess initial responsibility<a class="headerlink" href="#guess-initial-responsibility" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to make an initial guess of responsibility.
+<a class="reference external" href="api.html#sati.preprocessing.GuessInitRsp">sati.GuessInitRsp</a> helps
+this process.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># importing packages</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sati</span>
+
+<span class="c1"># Image to be analyzed needs to be given as numpy.ndarray.</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;yourdata.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Suppose the image has 5 terraces of different heights.</span>
+<span class="c1"># When difference of values between adjacent pixels is below</span>
+<span class="c1"># a threshold, the pixels are regared in the same terrace.</span>
+<span class="c1"># The unit of threshold is that of the height of the image (e.g., nm).</span>
+<span class="n">initrsp</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">GuessInitRsp</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">5e-3</span><span class="p">)</span>
+
+<span class="c1"># Show a guess of initial responsibility.</span>
+<span class="n">initrsp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If it works, each terrace is assigned to a class. Since the seeds (starting
+points) of terrace search are randomly chosen, results are different every
+time.  Once you get a nice initial responsibility, you can reproduce it from
+the seeds used for the guess that is saved in the attribute <code class="docutils literal notranslate"><span class="pre">seeds</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If there are two (or more) terraces that are supposed to be the same
+height in an image, all of them should be assigned to the same class, or
+only one of them should be assigned to a class and the other(s) should
+be left unassigned.</p>
+</div>
+</div>
+<div class="section" id="subtract-a-linear-plane">
+<h2>Subtract a linear plane<a class="headerlink" href="#subtract-a-linear-plane" title="Permalink to this headline">¶</a></h2>
+<p>Using the initial responsibility above, analysis with a linear plane and
+Cauchy distribution can be done as follows.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Polynomial plane of degree 1</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">planes</span><span class="o">.</span><span class="n">Poly</span><span class="p">()</span>
+
+<span class="c1"># Cauchy distribution</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Cauchy</span><span class="p">()</span>
+
+<span class="c1"># Create an model and optimize it.</span>
+<span class="c1"># initrsp.guess is the initial responsibility above.</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rsp</span><span class="o">=</span><span class="n">initrsp</span><span class="o">.</span><span class="n">guess</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="n">dist</span><span class="p">,</span> <span class="n">poly</span><span class="o">=</span><span class="n">poly</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Optimized parameters are given in the attributes. In the
+above example,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m.subtracted</span></code> a plane-subtracted image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">m.rsp</span></code> estimated responsibility, <em>i.e.</em>, soft clustering of terraces</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">m.dist.loc</span></code> estimated location parameters of the distribution,
+<em>i.e.</em>, heights of terraces</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">m.dist.scale</span></code> estimated scale parameters of the distribution.</p></li>
+</ul>
+<p>See <a class="reference internal" href="api.html#api"><span class="std std-ref">API documentation</span></a> for more details.</p>
+</div>
+<div class="section" id="subtract-decays">
+<h2>Subtract decays<a class="headerlink" href="#subtract-decays" title="Permalink to this headline">¶</a></h2>
+<p>Logarithmic / exponential decays are included by setting the <code class="docutils literal notranslate"><span class="pre">decay</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rsp</span><span class="o">=</span><span class="n">initrsp</span><span class="o">.</span><span class="n">guess</span><span class="p">,</span> <span class="n">poly</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">planes</span><span class="o">.</span><span class="n">Poly</span><span class="p">(),</span>
+               <span class="n">decay</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">planes</span><span class="o">.</span><span class="n">Decay</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">coef</span><span class="o">=-</span><span class="mf">2e-11</span><span class="p">),</span>
+               <span class="n">dist</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Cauchy</span><span class="p">())</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The unit of <code class="docutils literal notranslate"><span class="pre">tau</span></code> and <code class="docutils literal notranslate"><span class="pre">coef</span></code> are pixel and the unit of the height
+(<em>e.g.</em>, nm), respectively. Depending on scan direction of an image, you need
+to set the <code class="docutils literal notranslate"><span class="pre">orgdrct</span></code> arguments to specify chronological order of pixels.
+See <a class="reference external" href="api.html#sati.planes.Decay">API documentation</a> for more details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">kind=='exp'</span></code>, the sign of <code class="docutils literal notranslate"><span class="pre">coef</span></code> is opposite to the <em>z</em>-direction
+to which the decay goes. For example, when the <em>z</em>-direction is positive
+(the tip height gets larger as time goes on), <code class="docutils literal notranslate"><span class="pre">coef</span></code> is negative.</p>
+</div>
+</div>
+<div class="section" id="use-a-previous-result-as-an-initial-value">
+<h2>Use a previous result as an initial value<a class="headerlink" href="#use-a-previous-result-as-an-initial-value" title="Permalink to this headline">¶</a></h2>
+<p>For example, when you subtract a polynomial surface of <code class="docutils literal notranslate"><span class="pre">degree</span></code> &gt; 1, you
+may want to use coefficients obtained for a model with a lower degree as
+initial values to prevent the optimization from being trapped in a small
+local maximum. Here is such an example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linear plane</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rsp</span><span class="o">=</span><span class="n">initrsp</span><span class="o">.</span><span class="n">guess</span><span class="p">,</span> <span class="n">poly</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">planes</span><span class="o">.</span><span class="n">Poly</span><span class="p">(),</span>
+               <span class="n">dist</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Cauchy</span><span class="p">())</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+<span class="c1"># Use the result as an initial guess and optimize again.</span>
+<span class="n">m</span><span class="o">.</span><span class="n">poly</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">planes</span><span class="o">.</span><span class="n">Poly</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">coef</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">poly</span><span class="o">.</span><span class="n">coef</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="estimate-a-unit-height-of-steps">
+<span id="estimating-unitheight"></span><h2>Estimate a unit height of steps<a class="headerlink" href="#estimate-a-unit-height-of-steps" title="Permalink to this headline">¶</a></h2>
+<p>Estimating a unit height of steps is achieved by adopting von Mises-Fisher
+distribution as a prior distribution for the location parameter of a model
+distribution.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optimize a model to get a set of initial values for the next step</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rsp</span><span class="o">=</span><span class="n">initrsp</span><span class="o">.</span><span class="n">guess</span><span class="p">,</span> <span class="n">poly</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">planes</span><span class="o">.</span><span class="n">Poly</span><span class="p">(),</span>
+               <span class="n">dist</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Cauchy</span><span class="p">())</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+<span class="c1"># Set von Mises-Fisher distribution as a prior probability.</span>
+<span class="n">m</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">VonMises</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">rsp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">len(kappa)</span></code> must be the same as the number of terraces.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">scale</span></code> parameter takes an initial guess of the lattice constant.
+The estimated lattice constant is given in the <code class="docutils literal notranslate"><span class="pre">scale</span></code> attribute
+(<code class="docutils literal notranslate"><span class="pre">m.prior.scale</span></code> in the above example).</p>
+</div>
+<div class="section" id="save-interim-result">
+<h2>Save interim result<a class="headerlink" href="#save-interim-result" title="Permalink to this headline">¶</a></h2>
+<p>You can save a result so that you can reuse it as a set of initial parameters
+for successive calculations. This is useful, for example, when you change
+parameters at the end of a series of long calculations.</p>
+<p>For example, when you <a class="reference external" href="#estimating-unitheight">estimate an unit height of steps</a>,
+you would repeat calculations with different <code class="docutils literal notranslate"><span class="pre">kappa</span></code>. If calculations
+before applying a prior distribution take long time, you may want to save
+the result to reuse it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rsp</span><span class="o">=</span><span class="n">initrsp</span><span class="o">.</span><span class="n">guess</span><span class="p">,</span> <span class="n">poly</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">planes</span><span class="o">.</span><span class="n">Poly</span><span class="p">(),</span>
+               <span class="n">dist</span><span class="o">=</span><span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Cauchy</span><span class="p">())</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+<span class="c1"># Save the result for subsequent calculations</span>
+<span class="n">m</span><span class="o">.</span><span class="n">pickle</span><span class="p">(</span><span class="s1">&#39;tmp.pickle&#39;</span><span class="p">)</span>
+
+<span class="c1"># kappa = 0.01</span>
+<span class="n">m</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">VonMises</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">01</span><span class="p">]</span><span class="o">*</span><span class="n">rsp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Suppose you decide to calculate with larger <code class="docutils literal notranslate"><span class="pre">kappa</span></code> after seeing the result
+of <code class="docutils literal notranslate"><span class="pre">kappa=0.01</span></code>. You can directly calculate the final step as follows.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">unpickle</span><span class="p">(</span><span class="s1">&#39;tmp.pickle&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">VonMises</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">rsp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">unpickle</span><span class="p">(</span><span class="s1">&#39;tmp.pickle&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">sati</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">VonMises</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="p">[</span><span class="mf">1.</span><span class="p">]</span><span class="o">*</span><span class="n">rsp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">m</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you reuse a result without saving it, you can also use <code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code>
+of the <a class="reference external" href="https://docs.python.org/3/library/copy.html">copy</a> module.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Sati" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Yuhki Kohsaka
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

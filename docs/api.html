@@ -1,0 +1,827 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API documentation &mdash; sati  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> sati
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sati">sati</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sati-distributions">sati.distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sati-planes">sati.planes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sati-objective">sati.objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sati-optimize">sati.optimize</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sati</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-documentation">
+<span id="api"></span><h1>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sati">
+<h2>sati<a class="headerlink" href="#sati" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="sati.Model">
+<em class="property">class </em><code class="sig-prename descclassname">sati.</code><code class="sig-name descname">Model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">rsp</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">poly</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">decay</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">prior</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">roi</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for describing a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – An input image.</p></li>
+<li><p><strong>rsp</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – An initial guess of the responsibility. This takes a 3D array.
+The first dimension is terrace, and the second and third
+dimensions are positions.</p></li>
+<li><p><strong>dist</strong> (<a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a>) – An initial guess of a distribution.</p></li>
+<li><p><strong>poly</strong> (<a class="reference internal" href="#sati.planes.Poly" title="sati.planes.Poly"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.planes.Poly</span></code></a>) – An initial guess of a polynomial plane.</p></li>
+<li><p><strong>decay</strong> (<a class="reference internal" href="#sati.planes.Decay" title="sati.planes.Decay"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.planes.Decay</span></code></a>) – An initial guess of a decay plane.</p></li>
+<li><p><strong>prior</strong> (<a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a>, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A prior distribution for <code class="docutils literal notranslate"><span class="pre">dist.loc</span></code>.</p></li>
+<li><p><strong>roi</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A 2D array that has the same shape as the image array and
+specifies an region of interest. Set pixels to be calculated
+to 1.  By default, the whole area is used for the calculation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="sati.Model.objective">
+<code class="sig-name descname">objective</code><a class="headerlink" href="#sati.Model.objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first element is for the main EM loop, and the second
+element is for the M step. If the quick method is used,
+the second one is not used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#sati.objective.Objective" title="sati.objective.Objective"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.objective.Objective</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.Model.image">
+<code class="sig-name descname">image</code><a class="headerlink" href="#sati.Model.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>A copy of the input image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.Model.subtracted">
+<code class="sig-name descname">subtracted</code><a class="headerlink" href="#sati.Model.subtracted" title="Permalink to this definition">¶</a></dt>
+<dd><p>An image subtracted by an estimated model plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.Model.rsp">
+<code class="sig-name descname">rsp</code><a class="headerlink" href="#sati.Model.rsp" title="Permalink to this definition">¶</a></dt>
+<dd><p>An estimated responsibility.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.Model.dist">
+<code class="sig-name descname">dist</code><a class="headerlink" href="#sati.Model.dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>An estimated distribution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.Model.poly">
+<code class="sig-name descname">poly</code><a class="headerlink" href="#sati.Model.poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>An estimated polynomial plane</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#sati.planes.Poly" title="sati.planes.Poly"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.planes.Poly</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.Model.decay">
+<code class="sig-name descname">decay</code><a class="headerlink" href="#sati.Model.decay" title="Permalink to this definition">¶</a></dt>
+<dd><p>An estimated decay plane</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#sati.planes.Decay" title="sati.planes.Decay"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.planes.Decay</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.Model.prior">
+<code class="sig-name descname">prior</code><a class="headerlink" href="#sati.Model.prior" title="Permalink to this definition">¶</a></dt>
+<dd><p>An estimated distribution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.Model.n_iter">
+<code class="sig-name descname">n_iter</code><a class="headerlink" href="#sati.Model.n_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>A number of iterations run by the main EM loop to reach
+the specified tolerance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sati.Model.optimize">
+<code class="sig-name descname">optimize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">maxiter</span><span class="o">=</span><span class="default_value">256</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">1e-07</span></em>, <em class="sig-param"><span class="n">verbosity</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">options</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.Model.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimize model parameters using the expectation-maximization
+(EM) algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quick</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, default <code class="docutils literal notranslate"><span class="pre">True</span></code>) – Use the quick method when possible, that is, Normal or Cauchy
+distribution is used, <code class="docutils literal notranslate"><span class="pre">decay</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, and <code class="docutils literal notranslate"><span class="pre">prior</span></code>
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>method</strong> ({‘auto’, ‘l-bfgs-b’, ‘adam’, ‘quick’}, default <code class="docutils literal notranslate"><span class="pre">auto</span></code>) – The method used for the optimization in the M-step.
+When <code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">quick</span></code> is used if <code class="docutils literal notranslate"><span class="pre">dist</span></code> is the normal or
+Cauchy distribution, otherwise <code class="docutils literal notranslate"><span class="pre">l-bfgs-b</span></code> is used.</p></li>
+<li><p><strong>maxiter</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, default 256) – The maximum number of iterations of the main EM loop.</p></li>
+<li><p><strong>tol</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>, default 1e-7) – The fractional tolerance to stop the iteration of the main EM loop.</p></li>
+<li><p><strong>verbosity</strong> (<em>{0</em><em>, </em><em>1</em><em>, </em><em>2}</em><em>, </em><em>default 1</em>) – <p>Set 1 to show a summary of result, 2 to show values of
+objective function in the console during calculation, and
+0 to show nothing.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you use the Win32 console, 1 (default) or 0 is recommended
+because the values are not shown neatly. (The Win32 console
+does not support the ANSI escape code.)</p>
+</div>
+</p></li>
+<li><p><strong>options</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – <p>A dictionary of optimizer options. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the default value
+different for each optimizer is used.</p>
+<ul>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">method=='l-bfgs-b'</span></code>, see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.minimize-lbfgsb.html#optimize-minimize-lbfgsb">scipy.optimize.minimize(method=’L-BFGS-B’)</a></p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">method=='adam'</span></code>, see <a class="reference internal" href="#sati.optimize.minimize" title="sati.optimize.minimize"><code class="xref py py-func docutils literal notranslate"><span class="pre">sati.optimize.minimize()</span></code></a>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sati.Model.pickle">
+<code class="sig-name descname">pickle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.Model.pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pickle a model.</p>
+<p>This is a wrapper of the following.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – A path-like object of the file to be saved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sati.Model.unpickle">
+<em class="property">static </em><code class="sig-name descname">unpickle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.Model.unpickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unpickle a model.</p>
+<p>This is a wrapper of the following.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – A path-like object of the file to be opened.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="sati.GuessInitRsp">
+<em class="property">class </em><code class="sig-prename descclassname">sati.</code><code class="sig-name descname">GuessInitRsp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">threshold</span></em>, <em class="sig-param"><span class="n">seeds</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_size</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.GuessInitRsp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for making a guess of initial responsibility.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>array-like</em>) – image array</p></li>
+<li><p><strong>n</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – Number of terraces</p></li>
+<li><p><strong>threshold</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – When difference of values between adjacent pixels is below
+this threshold, those pixels are regared in the same terrace.</p></li>
+<li><p><strong>seeds</strong> (array-like of <code class="docutils literal notranslate"><span class="pre">tuple</span></code>) – Use this as initial locations of clustering, if given. Each tuple
+denotes an initial location. If number of tuples is less than <code class="docutils literal notranslate"><span class="pre">n</span></code>,
+random initial locations are used for the rest.</p></li>
+<li><p><strong>min_size</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, default 10) – Minimum number of pixels of a terrace.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="sati.GuessInitRsp.guess">
+<code class="sig-name descname">guess</code><a class="headerlink" href="#sati.GuessInitRsp.guess" title="Permalink to this definition">¶</a></dt>
+<dd><p>An array of suggested initial responsibility</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.GuessInitRsp.image">
+<code class="sig-name descname">image</code><a class="headerlink" href="#sati.GuessInitRsp.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>An array of an image shown by show(). A value at each pixel denotes
+a terrace in which the pixel is assigned. -1 means unassigned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sati.GuessInitRsp.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.GuessInitRsp.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show an image of suggested initial responsibility.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – keyword parameters to be passed to matplotlib.pyplot.imshow()</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sati-distributions">
+<h2>sati.distributions<a class="headerlink" href="#sati-distributions" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="sati.distributions.Distribution">
+<em class="property">class </em><code class="sig-prename descclassname">sati.distributions.</code><code class="sig-name descname">Distribution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.distributions.Distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base class to construct specific distribution classes.</p>
+<p>All distributions take <code class="docutils literal notranslate"><span class="pre">loc</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> as keyword parameters to
+adjust the location and scale of the distribution, just as
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/tutorial/stats.html#shifting-and-scaling">scipy.stat</a>,
+unless otherwise noted.</p>
+<p>Optimized parameters are stored in attributes of the same name.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="sati.distributions.Norm">
+<em class="property">class </em><code class="sig-prename descclassname">sati.distributions.</code><code class="sig-name descname">Norm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.distributions.Norm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a></p>
+<p>Class for normal distribution,</p>
+<div class="math notranslate nohighlight">
+\[p(x|\mu, \sigma) = \dfrac{1}{\sqrt{2\pi\sigma^2}}
+    \exp\left\{-\dfrac{(x-\mu)^2}{2\sigma^2}\right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> are the location and scale
+parameter, respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc</strong> (array-like, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Initial guess of the location parameter. By default, this is
+automatically calculated.</p></li>
+<li><p><strong>scale</strong> (array-like, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Initial guess of the scale parameter. By default, this is
+automatically calculated.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">loc, scale</code></dt>
+<dd><p>Optimized parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="sati.distributions.Cauchy">
+<em class="property">class </em><code class="sig-prename descclassname">sati.distributions.</code><code class="sig-name descname">Cauchy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.distributions.Cauchy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a></p>
+<p>Class for Cauchy distribution.</p>
+<div class="math notranslate nohighlight">
+\[p(x|\mu, \sigma) = \dfrac{1}{\pi}
+                   \dfrac{\sigma}{(x-\mu)^2+\sigma^2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> are the location and scale
+parameter, respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc</strong> (array-like, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Initial guess of the location parameter. By default, this is
+automatically calculated.</p></li>
+<li><p><strong>scale</strong> (array-like, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Initial guess of the scale parameter. By default, this is
+automatically calculated.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">loc, scale</code></dt>
+<dd><p>Optimized parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="sati.distributions.T">
+<em class="property">class </em><code class="sig-prename descclassname">sati.distributions.</code><code class="sig-name descname">T</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">df</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.distributions.T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a></p>
+<p>Class for Student’s t distribution,</p>
+<div class="math notranslate nohighlight">
+\[p(x|\mu, \sigma, \mu) =
+     \dfrac{\Gamma((\nu+1)/2)}{\Gamma(\nu/2)\sigma\sqrt{\pi\nu}}
+     \left\{1+\dfrac{1}{\nu}
+            \left(\dfrac{x-\mu}{\sigma}\right)^2\right\}
+     ^{-(\nu+1)/2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span>, <span class="math notranslate nohighlight">\(\sigma\)</span>, and <span class="math notranslate nohighlight">\(\nu\)</span> are the location,
+scale, and degree of freedom parameter, respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc</strong> (array-like, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Initial guess of the location parameter. By default, this is
+automatically calculated.</p></li>
+<li><p><strong>scale</strong> (array-like, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Initial guess of the scale parameter. By default, this is
+automatically calculated.</p></li>
+<li><p><strong>df</strong> (array-like, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Initial guess of the degree of freedom. By default, this is
+<code class="docutils literal notranslate"><span class="pre">numpy.ones_like(loc)</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">loc, scale, df</code></dt>
+<dd><p>Optimized parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="sati.distributions.VonMises">
+<em class="property">class </em><code class="sig-prename descclassname">sati.distributions.</code><code class="sig-name descname">VonMises</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">loc</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">scale</span></em>, <em class="sig-param"><span class="n">kappa</span><span class="o">=</span><span class="default_value">[1.0]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.distributions.VonMises" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a></p>
+<p>Class for von Mises distribution.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class is intended as a prior distribution for the location
+parameter <span class="math notranslate nohighlight">\(\mu\)</span> of either <a class="reference internal" href="#sati.distributions.Norm" title="sati.distributions.Norm"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Norm</span></code></a>,
+<a class="reference internal" href="#sati.distributions.Cauchy" title="sati.distributions.Cauchy"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Cauchy</span></code></a>, or
+<a class="reference internal" href="#sati.distributions.T" title="sati.distributions.T"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.T</span></code></a>.</p>
+</div>
+<div class="math notranslate nohighlight">
+\[p(\mu|c_0, \varphi_0, \kappa) = \dfrac{1}{2\pi I_0(\kappa)}
+    \exp\left\{
+        \kappa\cos\left(\dfrac{2\pi\mu}{c_0}-\varphi_0\right)
+    \right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\varphi_0\)</span>, <span class="math notranslate nohighlight">\(c_0\)</span>, and <span class="math notranslate nohighlight">\(\kappa\)</span> are the
+location, scale, and concentration parameters, respectively.
+<span class="math notranslate nohighlight">\(I_0\)</span> is the modified Bessel function of the first kind
+at order 0.</p>
+<p>This is slightly different from the standard form of von Mises
+distribution to estimate a unit height of steps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>, default 0) – Initial guess of the location parameter <span class="math notranslate nohighlight">\(\varphi_0\)</span>.</p></li>
+<li><p><strong>scale</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Initial guess of the scale parameter <span class="math notranslate nohighlight">\(c_0\)</span>. This takes
+an initial guess of a unit height of steps.</p></li>
+<li><p><strong>kappa</strong> (<em>array-like</em><em>, </em><em>default 1.0</em>) – The concentration parameter. The length of <code class="docutils literal notranslate"><span class="pre">kappa</span></code> must be the
+same as number of terraces. To exclude a terrace from the MAP
+estimation, set the corresponding element of <code class="docutils literal notranslate"><span class="pre">kappa</span></code> to 0.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">loc, scale</code></dt>
+<dd><p>Optimized parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sati-planes">
+<h2>sati.planes<a class="headerlink" href="#sati-planes" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="sati.planes.Poly">
+<em class="property">class </em><code class="sig-prename descclassname">sati.planes.</code><code class="sig-name descname">Poly</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">degree</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">coef</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.planes.Poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for a polynomial plane.</p>
+<div class="math notranslate nohighlight">
+\[f(n) = w_0 + w_1x_n + w_2y_n + w_3x_n^2 + w_4x_ny_n + w_5y_n^2 + \dots\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degree</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, default 1) – Degree of the polynomial plane.</p></li>
+<li><p><strong>coef</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>, default <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Initial guess of <span class="math notranslate nohighlight">\(w_i\)</span>. By default, this is automatically
+caluculated from an input image and an initial guess of the
+responsibility.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">coef, plane</code></dt>
+<dd><p>Optimized <span class="math notranslate nohighlight">\(w_i\)</span> and <span class="math notranslate nohighlight">\(f(n)\)</span>, responsibility.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="sati.planes.Decay">
+<em class="property">class </em><code class="sig-prename descclassname">sati.planes.</code><code class="sig-name descname">Decay</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">tau</span></em>, <em class="sig-param"><span class="n">coef</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">kind</span><span class="o">=</span><span class="default_value">'log'</span></em>, <em class="sig-param"><span class="n">orgdrct</span><span class="o">=</span><span class="default_value">'lbx'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.planes.Decay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for a decay plane.</p>
+<div class="math notranslate nohighlight">
+\[f(n) = \sum_i A_i\exp(-n/\tau_i)
+\quad\mathrm{or}\quad
+f(n) = \sum_i A_i\ln(n+\tau_i)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tau</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code> or array-like) – Initial guess of <span class="math notranslate nohighlight">\(\tau_i\)</span> in the unit of pixels.</p></li>
+<li><p><strong>coef</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code> or array-like, default 1) – Initial guess of <span class="math notranslate nohighlight">\(A_i\)</span></p></li>
+<li><p><strong>kind</strong> (<em>{'exp'</em><em>, </em><em>'log'}</em><em>, </em><em>default 'log'</em>) – Decay function.</p></li>
+<li><p><strong>orgdrct</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, default ‘lbx’) – <p>Origin and direction of decay specifying chronological order of
+pixels in an image. The origin is the starting point of scan and
+the direction is that of fast scan. The origin is described by
+either ‘lb’, ‘rb’, ‘lt’, or ‘rt’, denoting left bottom, right
+bottom, left top, and right bottom, respectively. The direction
+is described by either ‘x’ or ‘y’.</p>
+<img alt="_images/orgdrct.svg" src="_images/orgdrct.svg" /><p>The characters are case-insensitive and have no particular order.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">tau, coef, plane</code></dt>
+<dd><p>Optimized <span class="math notranslate nohighlight">\(\tau_i\)</span>, <span class="math notranslate nohighlight">\(A_i\)</span> and <span class="math notranslate nohighlight">\(f(n)\)</span>,
+responsibility.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="sati.planes.Decay.orgdrct">
+<code class="sig-name descname">orgdrct</code><a class="headerlink" href="#sati.planes.Decay.orgdrct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Origin and direction of decay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sati-objective">
+<h2>sati.objective<a class="headerlink" href="#sati-objective" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="sati.objective.calc">
+<code class="sig-prename descclassname">sati.objective.</code><code class="sig-name descname">calc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dist</span></em>, <em class="sig-param"><span class="n">t_subtracted</span></em>, <em class="sig-param"><span class="n">prior</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.objective.calc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate a value of objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dist</strong> (a subclass of <a class="reference internal" href="#sati.distributions.Distribution" title="sati.distributions.Distribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.Distribution</span></code></a>) – A distribution used in a model.</p></li>
+<li><p><strong>t_subtracted</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Subtracted one-dimensionalized image.</p></li>
+<li><p><strong>prior</strong> (<a class="reference internal" href="#sati.distributions.VonMises" title="sati.distributions.VonMises"><code class="xref py py-class docutils literal notranslate"><span class="pre">sati.distributions.VonMises</span></code></a>) – A prior distribution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A value of objective function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="sati.objective.Objective">
+<em class="property">class </em><code class="sig-prename descclassname">sati.objective.</code><code class="sig-name descname">Objective</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">maxiter</span></em>, <em class="sig-param"><span class="n">tol</span></em>, <em class="sig-param"><span class="n">verbose</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.objective.Objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for an objective function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxiter</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – The maximum number of iterations of the main EM loop.</p></li>
+<li><p><strong>tol</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – The fractional tolerance to stop the iteration.</p></li>
+<li><p><strong>verbose</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, show values of objective function in the console
+during calculation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">value, diff</code></dt>
+<dd><p>Objective function and its relative difference. Values are
+appended at each cycle of iterations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list</span></code> of <code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sati-optimize">
+<h2>sati.optimize<a class="headerlink" href="#sati-optimize" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="sati.optimize.minimize">
+<code class="sig-prename descclassname">sati.optimize.</code><code class="sig-name descname">minimize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fun</span></em>, <em class="sig-param"><span class="n">x0</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'adam'</span></em>, <em class="sig-param"><span class="n">jac</span></em>, <em class="sig-param"><span class="n">options</span><span class="o">=</span><span class="default_value">{'betas': [0.9, 0.999], 'epsilon': 1e-08, 'ftol': 1e-07, 'lr': 0.001, 'maxiter': 256, 'reduction': 0.5}</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sati.optimize.minimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimization of scalar function of one or more variables.</p>
+<p>The parameters are similar to those of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize">scipy.optimize.minimize</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fun</strong> (<em>callable</em>) – The objective function to be minimized: <code class="docutils literal notranslate"><span class="pre">fun(x)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>
+where <code class="docutils literal notranslate"><span class="pre">x</span></code> is an array with shape (n,), where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number
+of independent variables.</p></li>
+<li><p><strong>x0</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Initial guess. Array of real elements of size (n,).</p></li>
+<li><p><strong>method</strong> (<em>{'adam'}</em><em>, </em><em>default 'adam'</em>) – Optimizer.</p></li>
+<li><p><strong>jac</strong> (<em>callable</em>) – A function that returns the gradient vector:
+<code class="docutils literal notranslate"><span class="pre">jac(x)</span> <span class="pre">-&gt;</span> <span class="pre">array_like,</span> <span class="pre">shape</span> <span class="pre">(n,)</span></code>
+where <code class="docutils literal notranslate"><span class="pre">x</span></code> is an array with shape (n,).</p></li>
+<li><p><strong>options</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – <p>Optimizer options.</p>
+<ul>
+<li><p>betas : <code class="docutils literal notranslate"><span class="pre">tuple</span></code> of <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p>epsilon : <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+</ul>
+<p>These are parameters defined in the reference <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+<ul>
+<li><p>lr : <code class="docutils literal notranslate"><span class="pre">float</span></code>, the learning rate.</p></li>
+<li><p>ftol : <code class="docutils literal notranslate"><span class="pre">float</span></code>, the fractional tolerance to stop the iteration.</p></li>
+<li><p>maxiter : <code class="docutils literal notranslate"><span class="pre">int</span></code>, the maximum number of iterations.</p></li>
+<li><p>reduction : <code class="docutils literal notranslate"><span class="pre">float</span></code>, this value is multiplied to <code class="docutils literal notranslate"><span class="pre">lr</span></code> when the objective function is smaller than that of the last step in the main EM loop.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The optimization result. The results are stored in the attributes of
+<code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">success</span></code>, <code class="docutils literal notranslate"><span class="pre">fun</span></code>, <code class="docutils literal notranslate"><span class="pre">jac</span></code>, and <code class="docutils literal notranslate"><span class="pre">nit</span></code>. See
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult">scipy.optimize.OptimizeResult</a> for more details.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>scipy.optimize.OptimizeResult</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Diederik P. Kingma, Jimmy Ba, “Adam: A Method for Stochastic
+Optimization”, arXiv:1412.6980</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Yuhki Kohsaka
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
