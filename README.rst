@@ -22,11 +22,15 @@ Requirements
 ------------
 Sati requires the following dependencies:
 
-* python 3.8
+* python 3.8 or later
 * matplotlib
 * numexpr
 * numpy
 * scipy
+
+Reference
+---------
+If you find this package is useful for your analysis, please refer `arXiv:2012.01570 <https://arxiv.org/abs/2012.01570>`_.
 
 Documents
 ---------
