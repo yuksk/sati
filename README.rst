@@ -1,15 +1,19 @@
 Sati
 ====
-Statistical analysis of Topographic Image
+Statistical Analysis of Topographic Images
 
-This package provides
+.. image:: ./docs/source/raw_subtracted.png
 
-* subtracting background (a polynomial surface, logarithmic decays, exponential decays)
-* labeling terraces
-* estimating terrace heights
-* estimating a unit height of steps
+.. common
 
-The subtraction is possible even in the presence of steps.
+This package enables you to simultaneously
+
+* subtract background (a polynomial surface, logarithmic decays, exponential decays)
+* label terraces
+* estimate terrace heights
+* estimate the unit height of steps
+
+even in the presence of steps.
 
 Install
 -------
