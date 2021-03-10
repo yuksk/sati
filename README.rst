@@ -34,7 +34,7 @@ Sati requires the following dependencies:
 
 Reference
 ---------
-If you find this package is useful for your analysis, please refer `arXiv:2012.01570 <https://arxiv.org/abs/2012.01570>`_.
+If you find this package is useful for your analysis, please refer `Y. Kohsaka, Rev. Sci. Instrum. 92, 033702 (2021) <https://doi.org/10.1063/5.0038852>`_.
 
 Documents
 ---------
