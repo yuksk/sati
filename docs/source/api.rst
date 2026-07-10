@@ -9,8 +9,8 @@ sati
 .. autoclass:: sati.Model
    :members: optimize, pickle, unpickle
 
-.. autoclass:: sati.GuessInitRsp
-   :members: show
+.. autoclass:: sati.Responsibility
+   :members: initial_guess, classify
 
 sati.distributions
 ------------------

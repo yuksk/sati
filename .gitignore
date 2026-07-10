@@ -11,3 +11,8 @@ dist/
 
 # sphinx
 docs/build/
+
+# vscode
+.vscode
+
+*.out

@@ -1,6 +1,7 @@
-__all__ = ['Norm', 'Cauchy', 'T', 'VonMises']
+__all__ = ["Norm", "Cauchy", "T", "VonMises"]
 
 from abc import ABCMeta, abstractmethod
+from typing import Sequence, overload
 
 import numpy as np
 import numexpr as ne
@@ -18,7 +19,10 @@ class Distribution(metaclass=ABCMeta):
 
     Optimized parameters are stored in attributes of the same name.
     """
-    def __init__(self, loc=None, scale=None):
+
+    def __init__(
+        self, loc: np.ndarray | None = None, scale: np.ndarray | None = None
+    ) -> None:
         """
         Parameters
         ----------
@@ -30,24 +34,27 @@ class Distribution(metaclass=ABCMeta):
         self.loc = None if loc is None else np.array(loc)
         self.scale = None if scale is None else np.array(scale)
 
-    def __str__(self):
+    def __str__(self) -> str:
         np.set_printoptions(precision=3)
-        return f'centers: {self.loc}\nscales:  {self.scale}'
+        return f"centers: {self.loc}\nscales:  {self.scale}"
 
-    def scaler(self, image_scale, backward=False):
-        """Apply scaling used to standardize an input image to
-        distribution parameters.
+    def scaler(self, image_scale: tuple[float, float], backward: bool = False) -> None:
+        """Apply the image standardization scaling to distribution parameters.
 
         Parameters
         ----------
         image_scale : tuple of float
-            Values used to standardize an input image, mean and std.
+            Mean and standard deviation used to standardize the input image.
         backward : bool
-            If true, apply the reverse process to distribution parameter
-            in order to restore the original scale of an input image.
+            If ``True``, apply the inverse transform to restore distribution
+            parameters to the original image scale.
         """
-        (mean, std) = image_scale
+        mean, std = image_scale
         if backward:
+            if self.loc is None:
+                raise RuntimeError("loc must be initialized before scaler().")
+            if self.scale is None:
+                raise RuntimeError("scale must be initialized before scaler().")
             self.loc = self.loc * std + mean
             self.scale = self.scale * std
             return
@@ -57,8 +64,8 @@ class Distribution(metaclass=ABCMeta):
             self.scale = self.scale / std
 
     @abstractmethod
-    def pdf(self, t_subtracted):
-        """Probability distribution function.
+    def pdf(self, t_subtracted: np.ndarray) -> np.ndarray:
+        """Probability density function.
 
         Parameters
         ----------
@@ -71,29 +78,29 @@ class Distribution(metaclass=ABCMeta):
             The first dimension is class, and the second dimension is position.
         """
 
-    def initial_step(self, t_subtracted, gamma):
-        """Calculate distribution parameters in the initial step.
-        """
+    def initial_step(self, t_subtracted: np.ndarray, gamma: np.ndarray) -> None:
+        """Calculate distribution parameters in the initial step."""
         self.pi = self.mixing_coef(gamma)
         if self.loc is None:
             self.loc = self.center(t_subtracted, gamma)
         if self.scale is None:
             self.scale = self.std(t_subtracted, gamma, self.loc)
 
-    def retain(self):
+    def retain(self) -> None:
         """Retain the present distribution parameters so that they can be
         reverted later."""
         self.__loc, self.__scale = self.loc, self.scale
 
-    def revert(self):
-        """Revert the distribution parameters to those retained beforehand.
-        """
+    def revert(self) -> None:
+        """Revert the distribution parameters to those retained beforehand."""
         self.loc, self.scale = self.__loc, self.__scale
 
     @abstractmethod
-    def grad(self, t_subtracted, gamma):
-        """Calculate derivative of log likelihood with respect to distribution
-        parameters.
+    def grad(
+        self, t_subtracted: np.ndarray, gamma: np.ndarray
+    ) -> tuple[np.ndarray, ...]:
+        """Calculate the gradient of the log-likelihood with respect to
+        distribution parameters.
 
         Parameters
         ----------
@@ -101,43 +108,53 @@ class Distribution(metaclass=ABCMeta):
             One-dimensionalized image subtracted by a model plane.
         gamma : numpy.ndarray, 2D
             Two-dimensionalized responsibility. The first and second
-            dimensions are class and position, responsibility.
+            dimensions are class and position, respectively.
 
         Returns
         -------
         tuple of numpy.ndarray
-            By summing an ndarray of this list along axis 1, derivative
-            of the log likelihood is obtained. The ndarrays are returned
-            without being summed because the first element (grad_loc_like)
-            is also used to calculate derivative with respect to the plane
-            coefficients.
+            Summing each array along axis 1 gives the log-likelihood gradient.
+            Arrays are returned unsummed because the first element
+            (grad_loc_like) is also used to compute the gradient with respect
+            to the plane coefficients.
         """
 
-    def update_ga(self, new):
+    def update_ga(self, new: np.ndarray) -> None:
         """Update distribution parameters in the M-step.
 
         Parameters
         ----------
         new : numpy.ndarray
-            The size is product of numbers of classes and parameters.
+            The size is the product of the number of classes and the number
+            of parameters.
         """
         if isinstance(self.loc, float):
             self.loc, self.scale = new[0], new[1]
         else:
+            if self.loc is None:
+                raise RuntimeError("loc must be initialized before update_ga().")
             K = self.loc.size
-            self.loc, self.scale = new[:K], new[K:K * 2]
+            self.loc, self.scale = new[:K], new[K : K * 2]
 
-    def x0(self):
-        """Create a part of x0 used in scipy.optimize.minimize"""
+    def x0(self) -> np.ndarray:
+        """Create the portion of x0 used in ``scipy.optimize.minimize``."""
+        if self.loc is None:
+            raise RuntimeError("loc must be initialized before x0().")
+        if self.scale is None:
+            raise RuntimeError("scale must be initialized before x0().")
         return np.concatenate([self.loc, self.scale], axis=None)
 
-    def lb(self):
-        """Create a part of lb used in scipy.optimize.Bounds"""
-        return np.concatenate([np.full_like(self.loc, -np.inf),
-                               np.full_like(self.scale, np.finfo(float).eps)],
-                              axis=None)
+    def lb(self) -> np.ndarray:
+        """Create the portion of the lower bounds used in ``scipy.optimize.Bounds``."""
+        return np.concatenate(
+            [
+                np.full_like(self.loc, -np.inf),
+                np.full_like(self.scale, np.finfo(float).eps),
+            ],
+            axis=None,
+        )
 
-    def center(self, t, gamma):
+    def center(self, t: np.ndarray, gamma: np.ndarray) -> np.ndarray:
         """Calculate center values of a distribution.
 
         Parameters
@@ -153,10 +170,11 @@ class Distribution(metaclass=ABCMeta):
         numpy.ndarray
             The center values of each class.
         """
-        return np.array([np.average(t, weights=gamma[k])
-                         for k in range(gamma.shape[0])])
+        return np.array(
+            [np.average(t, weights=gamma[k]) for k in range(gamma.shape[0])]
+        )
 
-    def std(self, t, gamma, loc):
+    def std(self, t: np.ndarray, gamma: np.ndarray, loc: np.ndarray) -> np.ndarray:
         """Calculate standard deviation of a distribution.
 
         Parameters
@@ -173,12 +191,18 @@ class Distribution(metaclass=ABCMeta):
         numpy.ndarray
             Standard deviation of each class.
         """
-        return np.array([
-            0 if (n := np.sum(gamma[k])) == 0
-            else np.sqrt(np.sum(np.square(t - loc[k]) * gamma[k]) / n)
-            for k in range(gamma.shape[0])])
+        return np.array(
+            [
+                (
+                    0
+                    if (n := np.sum(gamma[k])) == 0
+                    else np.sqrt(np.sum(np.square(t - loc[k]) * gamma[k]) / n)
+                )
+                for k in range(gamma.shape[0])
+            ]
+        )
 
-    def mixing_coef(self, gamma):
+    def mixing_coef(self, gamma: np.ndarray) -> np.ndarray:
         """Calculate mixing coefficients.
 
         Parameters
@@ -193,7 +217,7 @@ class Distribution(metaclass=ABCMeta):
         """
         return (N_k := gamma.sum(axis=1)) / N_k.sum()
 
-    def fullpdf(self, t_subtracted):
+    def fullpdf(self, t_subtracted: np.ndarray) -> np.ndarray:
         """Probability density function multiplied by mixing coefficient.
 
         Parameters
@@ -211,7 +235,7 @@ class Distribution(metaclass=ABCMeta):
 
 
 class Norm(Distribution):
-    r"""Class for normal distribution,
+    r"""Class for the normal distribution,
 
     .. math::
        p(x|\mu, \sigma) = \dfrac{1}{\sqrt{2\pi\sigma^2}}
@@ -234,13 +258,14 @@ class Norm(Distribution):
     loc, scale : ``numpy.ndarray``
         Optimized parameters.
     """
-    def pdf(self, t_subtracted):
+
+    def pdf(self, t_subtracted: np.ndarray) -> np.ndarray:
         p = np.pi * 2
         t = t_subtracted.reshape(1, -1)
         s2, l = (self.scale**2).reshape(-1, 1), self.loc.reshape(-1, 1)
-        return ne.evaluate('exp(-(t - l)**2 / (2 * s2)) / sqrt(p * s2)')
+        return ne.evaluate("exp(-(t - l)**2 / (2 * s2)) / sqrt(p * s2)")
 
-    def update_quick(self, t_subtracted, gamma):
+    def update_quick(self, t_subtracted: np.ndarray, gamma: np.ndarray) -> None:
         """Calculate distribution parameters in the M-step using the
         quick method.
 
@@ -258,7 +283,9 @@ class Norm(Distribution):
         self.scale = self.std(t_subtracted, gamma, self.loc)
         self.pi = self.mixing_coef(gamma)
 
-    def grad(self, t_subtracted, gamma):
+    def grad(
+        self, t_subtracted: np.ndarray, gamma: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray]:
         # Derivative is obtained by summing the following arrays in axis 1
         # (position). But an array before summation (grad_loc_like) is used
         # for calculating derivative with respect to plane coefficients.
@@ -267,13 +294,13 @@ class Norm(Distribution):
         pdf = self.pdf(t_subtracted)
         t = t_subtracted.reshape(1, -1)
         s, l = self.scale.reshape(-1, 1), self.loc.reshape(-1, 1)
-        grad_loc_like = ne.evaluate('gamma * (t - l) / s**2')
-        grad_scale_like = ne.evaluate('gamma * (t**2 - 2 * t * l + l**2 - s**2) / s**3')
+        grad_loc_like = ne.evaluate("gamma * (t - l) / s**2")
+        grad_scale_like = ne.evaluate("gamma * (t**2 - 2 * t * l + l**2 - s**2) / s**3")
         return (grad_loc_like, grad_scale_like)
 
 
 class Cauchy(Distribution):
-    r"""Class for Cauchy distribution.
+    r"""Class for the Cauchy distribution.
 
     .. math::
        p(x|\mu, \sigma) = \dfrac{1}{\pi}
@@ -296,13 +323,14 @@ class Cauchy(Distribution):
     loc, scale : ``numpy.ndarray``
         Optimized parameters.
     """
-    def pdf(self, t_subtracted):
+
+    def pdf(self, t_subtracted: np.ndarray) -> np.ndarray:
         p = np.pi
         t = t_subtracted.reshape(1, -1)
         s, l = self.scale.reshape(-1, 1), self.loc.reshape(-1, 1)
-        return ne.evaluate('s / (((t-l)**2 + s**2) * p)')
+        return ne.evaluate("s / (((t-l)**2 + s**2) * p)")
 
-    def update_quick(self, t_subtracted, gamma):
+    def update_quick(self, t_subtracted: np.ndarray, gamma: np.ndarray) -> None:
         """Calculate distribution parameters in the M-step using the quick
         method.
 
@@ -317,19 +345,21 @@ class Cauchy(Distribution):
         p = np.pi
         t = t_subtracted.reshape(1, -1)
         s, l = self.scale.reshape(-1, 1), self.loc.reshape(-1, 1)
-        self.weight = ne.evaluate('gamma / (((t-l)**2 + s**2) * p)')
+        self.weight = ne.evaluate("gamma / (((t-l)**2 + s**2) * p)")
         gamma_tilde = self.weight * self.scale.reshape(-1, 1)
         self.retain()
         self.loc = self.center(t_subtracted, gamma_tilde)
         self.scale = self.__scaling_param(gamma, gamma_tilde)
         self.pi = self.mixing_coef(gamma)
 
-    def __scaling_param(self, gamma, gamma_tilde):
+    def __scaling_param(self, gamma: np.ndarray, gamma_tilde: np.ndarray) -> np.ndarray:
         numerator = gamma.sum(axis=1)
         denominator = gamma_tilde.sum(axis=1) * 2 * np.pi
-        return np.divide(numerator, denominator, where=denominator!=0)
+        return np.divide(numerator, denominator, where=denominator != 0)
 
-    def grad(self, t_subtracted, gamma):
+    def grad(
+        self, t_subtracted: np.ndarray, gamma: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray]:
         p = np.pi * 2
         pdf = self.pdf(t_subtracted)
         t = t_subtracted.reshape(1, -1)
@@ -338,8 +368,8 @@ class Cauchy(Distribution):
         # (position). But an array before summation (grad_loc_like) is used
         # for calculating derivative with respect to plane coefficients.
         # Therefore, arrays are returned without the summation.
-        grad_loc_like = ne.evaluate('gamma * pdf * p / s * (t - l)')
-        grad_scale_like = ne.evaluate('gamma * (1 / s - pdf * p)')
+        grad_loc_like = ne.evaluate("gamma * pdf * p / s * (t - l)")
+        grad_scale_like = ne.evaluate("gamma * (1 / s - pdf * p)")
         return (grad_loc_like, grad_scale_like)
 
 
@@ -347,14 +377,14 @@ class T(Distribution):
     r"""Class for Student's t distribution,
 
     .. math::
-       p(x|\mu, \sigma, \mu) =
+       p(x|\mu, \sigma, \nu) =
             \dfrac{\Gamma((\nu+1)/2)}{\Gamma(\nu/2)\sigma\sqrt{\pi\nu}}
             \left\{1+\dfrac{1}{\nu}
                    \left(\dfrac{x-\mu}{\sigma}\right)^2\right\}
             ^{-(\nu+1)/2}
 
     where :math:`\mu`, :math:`\sigma`, and :math:`\nu` are the location,
-    scale, and degree of freedom parameter, respectively.
+    scale, and degrees of freedom parameter, respectively.
 
     Parameters
     ----------
@@ -365,7 +395,7 @@ class T(Distribution):
         Initial guess of the scale parameter. By default, this is
         automatically calculated.
     df : array-like, default ``None``
-        Initial guess of the degree of freedom. By default, this is
+        Initial guess of the degrees of freedom. By default, this is
         ``numpy.ones_like(loc)``.
 
     Attributes
@@ -373,57 +403,92 @@ class T(Distribution):
     loc, scale, df : ``numpy.ndarray``
         Optimized parameters.
     """
-    def __init__(self, loc=None, scale=None, df=None):
+
+    def __init__(
+        self,
+        loc: np.ndarray | None = None,
+        scale: np.ndarray | None = None,
+        df: np.ndarray | None = None,
+    ) -> None:
         super().__init__(loc=loc, scale=scale)
         self.df = None if df is None else np.array(df)
 
-    def __str__(self):
-        return super().__str__() + f'\ndegree of freedom: {self.df}'
+    def __str__(self) -> str:
+        return super().__str__() + f"\ndegrees of freedom: {self.df}"
 
-    def pdf(self, t_subtracted):
+    def pdf(self, t_subtracted: np.ndarray) -> np.ndarray:
+        if self.loc is None:
+            raise RuntimeError("loc must be initialized before pdf().")
+        if self.scale is None:
+            raise RuntimeError("scale must be initialized before pdf().")
+        if self.df is None:
+            raise RuntimeError("df must be initialized before pdf().")
         u = (1 / (self.scale**2 * self.df)).reshape(-1, 1)
         v = self.df.reshape(-1, 1)
-        return np.sqrt(u) / scipy.special.beta(v * 0.5, 0.5) \
-            * (1 + u * (t_subtracted.reshape(1, -1) \
-            - self.loc.reshape(-1, 1))**2)**(-0.5*v - 0.5)
+        return (
+            np.sqrt(u)
+            / scipy.special.beta(v * 0.5, 0.5)
+            * (1 + u * (t_subtracted.reshape(1, -1) - self.loc.reshape(-1, 1)) ** 2)
+            ** (-0.5 * v - 0.5)
+        )
 
-    def initial_step(self, t_subtracted, gamma):
+    def initial_step(self, t_subtracted: np.ndarray, gamma: np.ndarray) -> None:
         super().initial_step(t_subtracted, gamma)
         if self.df is None:
             self.df = np.ones_like(self.loc)
 
-    def retain(self):
+    def retain(self) -> None:
         super().retain()
         self.__df = self.df
 
-    def revert(self):
+    def revert(self) -> None:
         super().revert()
         self.df = self.__df
 
-    def grad(self, t_subtracted, gamma):
+    def grad(
+        self, t_subtracted: np.ndarray, gamma: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        if self.loc is None:
+            raise RuntimeError("loc must be initialized before grad().")
+        if self.scale is None:
+            raise RuntimeError("scale must be initialized before grad().")
+        if self.df is None:
+            raise RuntimeError("df must be initialized before grad().")
         x = t_subtracted.reshape(1, -1) - self.loc.reshape(-1, 1)
         y = 1 / self.scale
-        u = (x * y.reshape(-1, 1))**2 + self.df.reshape(-1, 1)
+        u = (x * y.reshape(-1, 1)) ** 2 + self.df.reshape(-1, 1)
         v = (self.df.reshape(-1, 1) + 1) * np.reciprocal(u)
-        w = 1 + scipy.special.psi((self.df + 1) * 0.5) \
-            - scipy.special.psi(self.df * 0.5) + np.log(self.df)
+        w = (
+            1
+            + scipy.special.psi((self.df + 1) * 0.5)
+            - scipy.special.psi(self.df * 0.5)
+            + np.log(self.df)
+        )
         # Derivative is obtained by summing the following arrays in axis 1
         # (position). But an array before summation (grad_loc_like) is used
         # for calculating derivative with respect to plane coefficients.
         # Therefore, arrays are returned without the summation.
-        grad_loc_like = gamma * x * v * (y ** 2).reshape(-1, 1)
+        grad_loc_like = gamma * x * v * (y**2).reshape(-1, 1)
         grad_scale_like = gamma * (1 - v) * (self.df * y).reshape(-1, 1)
         grad_df_like = gamma * 0.5 * (w.reshape(-1, 1) - np.log(u) - v)
-        return(grad_loc_like, grad_scale_like, grad_df_like)
+        return (grad_loc_like, grad_scale_like, grad_df_like)
 
-    def update_ga(self, new):
+    def update_ga(self, new: np.ndarray) -> None:
         super().update_ga(new)
-        self.df = new[self.df.size*2:]
+        if self.df is None:
+            raise RuntimeError("df must be initialized before update_ga().")
+        self.df = new[self.df.size * 2 :]
 
-    def x0(self):
+    def x0(self) -> np.ndarray:
+        if self.loc is None:
+            raise RuntimeError("loc must be initialized before x0().")
+        if self.scale is None:
+            raise RuntimeError("scale must be initialized before x0().")
+        if self.df is None:
+            raise RuntimeError("df must be initialized before x0().")
         return np.concatenate([self.loc, self.scale, self.df], axis=None)
 
-    def lb(self):
+    def lb(self) -> np.ndarray:
         inf = np.full_like(self.loc, -np.inf)
         epsilon = np.full_like(self.scale, np.finfo(float).eps)
         return np.concatenate([inf, epsilon, epsilon], axis=None)
@@ -461,22 +526,25 @@ class VonMises(Distribution):
         Initial guess of the scale parameter :math:`c_0`. This takes
         an initial guess of a unit height of steps.
     kappa : array-like, default 1.0
-        The concentration parameter. The length of ``kappa`` must be the
-        same as number of terraces. To exclude a terrace from the MAP
-        estimation, set the corresponding element of ``kappa`` to 0.
+        The concentration parameter. The length of ``kappa`` must equal the
+        number of terraces. To exclude a terrace from the MAP estimation, set
+        the corresponding element of ``kappa`` to 0.
 
     Attributes
     ----------
     loc, scale  : ``float``
         Optimized parameters.
     """
-    def __init__(self, *, loc=0., scale, kappa=[1.]):
+
+    def __init__(
+        self, *, loc: float = 0.0, scale: float, kappa: np.ndarray | list = [1.0]
+    ) -> None:
         self.loc, self.scale, self.__kappa = loc, scale, np.asarray(kappa)
 
-    def __str__(self):
-        return f'spacing: {self.scale:.3f}'
+    def __str__(self) -> str:
+        return f"spacing: {self.scale:.3f}"
 
-    def pdf(self, mu):
+    def pdf(self, mu: np.ndarray) -> np.ndarray:
         """Probability distribution function.
 
         Parameters
@@ -491,11 +559,11 @@ class VonMises(Distribution):
         ``numpy.ndarray``
             Values at each class (terrace)
         """
-        return np.exp(self.__kappa * np.cos(2 * np.pi * mu / self.scale
-                                            - self.loc)
-                     ) / (2 * np.pi * scipy.special.i0(self.__kappa))
+        return np.exp(self.__kappa * np.cos(2 * np.pi * mu / self.scale - self.loc)) / (
+            2 * np.pi * scipy.special.i0(self.__kappa)
+        )
 
-    def loglikelihood_at_pixel(self, mu):
+    def loglikelihood_at_pixel(self, mu: np.ndarray) -> float:
         """
         Parameters
         ----------
@@ -504,10 +572,12 @@ class VonMises(Distribution):
             :class:`sati.distributions.Cauchy`, or
             :class:`sati.distributions.T` is expected.
         """
-        return (self.__kappa * np.cos(2 * np.pi * mu / self.scale - self.loc)
-                - self._logi0(self.__kappa)).sum()
+        return (
+            self.__kappa * np.cos(2 * np.pi * mu / self.scale - self.loc)
+            - self._logi0(self.__kappa)
+        ).sum()
 
-    def grad(self, mu, N):
+    def grad(self, mu: np.ndarray, N: int) -> tuple[np.ndarray, float, float]:
         """
         Parameters
         ----------
@@ -524,69 +594,80 @@ class VonMises(Distribution):
         grad_scale = 2 * np.pi * N / (self.scale * self.scale) * (mu * u).sum()
         return (grad_mu, grad_loc, grad_scale)
 
-    def scaler(self, image_scale, backward=False):
-        (_, std) = image_scale
+    def scaler(self, image_scale: tuple[float, float], backward: bool = False) -> None:
+        _, std = image_scale
         self.scale = self.scale * std if backward else self.scale / std
 
     @classmethod
-    def _logi0(cls, x):
-        """This function returns a value of np.log(2*np.pi*np.i0(x)).
-        When x >~ 800, scipy.special.i0(x) exceeds the limit of float64
-        although np.log(scipy.special.i0(x)) is still not so large.
-        To avoid this issue, np.log(np.i0(x)) is directly calculated
-        without calculating np.i0(x). This is a logarithmic version of
-        np.lib.function_base._i0_2(x), which is
-        exp(x) * _chbevl(32.0/x - 2.0, _i0B) / sqrt(x)
+    def _logi0(cls, x: np.ndarray) -> np.ndarray:
+        """Return ``log(2*pi*scipy.special.i0(x))``.
+
+        For x ≳ 700, ``scipy.special.i0(x)`` overflows float64, though its
+        logarithm remains finite. To avoid overflow, the logarithm is computed
+        directly using the asymptotic expansion of i0 (a logarithmic version
+        of ``np.lib.function_base._i0_2``):
+        ``exp(x) * _chbevl(32.0/x - 2.0, _i0B) / sqrt(x)``.
         """
-        return np.piecewise(x, [x < 700.], [cls.__logi0_1, cls.__logi0_2])
+        return np.piecewise(x, [x < 700.0], [cls.__logi0_1, cls.__logi0_2])
 
     @staticmethod
-    def __logi0_1(x):
+    def __logi0_1(x: np.ndarray) -> np.ndarray:
         return np.log(2 * np.pi * scipy.special.i0(x))
 
     @classmethod
-    def __logi0_2(cls, x):
-        return np.log(2 * np.pi) + x \
-                + np.log(cls.__chbevl(32.0 / x - 2.0, cls.__i0B)) \
-                - 0.5 * np.log(x)
+    def __logi0_2(cls, x: np.ndarray) -> np.ndarray:
+        return (
+            np.log(2 * np.pi)
+            + x
+            + np.log(cls.__chbevl(32.0 / x - 2.0, cls.__i0B))
+            - 0.5 * np.log(x)
+        )
+
+    @overload
+    @staticmethod
+    def __chbevl(x: float, vals: Sequence[float]) -> float: ...
+
+    @overload
+    @staticmethod
+    def __chbevl(x: np.ndarray, vals: Sequence[float]) -> np.ndarray: ...
 
     @staticmethod
-    def __chbevl(x, vals):
+    def __chbevl(x: float | np.ndarray, vals: Sequence[float]) -> float | np.ndarray:
         """This is a copy of np.lib.function_base._chbevl"""
-        b0, b1 = vals[0], 0.0
+        b0, b1, b2 = vals[0], 0.0, 0.0
 
         for i in range(1, len(vals)):
             b2 = b1
             b1 = b0
-            b0 = x*b1 - b2 + vals[i]
+            b0 = x * b1 - b2 + vals[i]
 
         return 0.5 * (b0 - b2)
 
     # This is a copy of np.lib.function_base._i0B
     __i0B = (
-        -7.23318048787475395456E-18,
-        -4.83050448594418207126E-18,
-        4.46562142029675999901E-17,
-        3.46122286769746109310E-17,
-        -2.82762398051658348494E-16,
-        -3.42548561967721913462E-16,
-        1.77256013305652638360E-15,
-        3.81168066935262242075E-15,
-        -9.55484669882830764870E-15,
-        -4.15056934728722208663E-14,
-        1.54008621752140982691E-14,
-        3.85277838274214270114E-13,
-        7.18012445138366623367E-13,
-        -1.79417853150680611778E-12,
-        -1.32158118404477131188E-11,
-        -3.14991652796324136454E-11,
-        1.18891471078464383424E-11,
-        4.94060238822496958910E-10,
-        3.39623202570838634515E-9,
-        2.26666899049817806459E-8,
-        2.04891858946906374183E-7,
-        2.89137052083475648297E-6,
-        6.88975834691682398426E-5,
-        3.36911647825569408990E-3,
-        8.04490411014108831608E-1
+        -7.23318048787475395456e-18,
+        -4.83050448594418207126e-18,
+        4.46562142029675999901e-17,
+        3.46122286769746109310e-17,
+        -2.82762398051658348494e-16,
+        -3.42548561967721913462e-16,
+        1.77256013305652638360e-15,
+        3.81168066935262242075e-15,
+        -9.55484669882830764870e-15,
+        -4.15056934728722208663e-14,
+        1.54008621752140982691e-14,
+        3.85277838274214270114e-13,
+        7.18012445138366623367e-13,
+        -1.79417853150680611778e-12,
+        -1.32158118404477131188e-11,
+        -3.14991652796324136454e-11,
+        1.18891471078464383424e-11,
+        4.94060238822496958910e-10,
+        3.39623202570838634515e-9,
+        2.26666899049817806459e-8,
+        2.04891858946906374183e-7,
+        2.89137052083475648297e-6,
+        6.88975834691682398426e-5,
+        3.36911647825569408990e-3,
+        8.04490411014108831608e-1,
     )

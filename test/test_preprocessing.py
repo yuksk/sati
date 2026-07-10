@@ -37,29 +37,49 @@ class TestPreprocessing(unittest.TestCase):
     def test_transform(self):
         poly = sati.preprocessing.PolynomialFeatures(2)
         pos = np.arange(8).reshape(2, 4)
-        x, y = pos[0,:], pos[1,:]
+        x, y = pos[0, :], pos[1, :]
         phi = poly.transform(pos)
         phi_expected = np.vstack((x, y, x * x, x * y, y * y))
         np.testing.assert_allclose(phi, phi_expected, rtol=1e-14)
 
-    def test_guess(self):
-        image = np.zeros((128, 128))
-        image[:64, 64:] += 1
-        image[64:, :64] += 2
-        image[64:, 64:] += 3
-        rsp_expected = np.zeros((4, 128, 128), dtype=bool)
-        rsp_expected[0,:64,:64] = True
-        rsp_expected[1,:64, 64:] = True
-        rsp_expected[2, 64:,:64] = True
-        rsp_expected[3, 64:, 64:] = True
+    # --- standardize() with explicit stats ---
 
-        seeds = ((0, 0), (0, 100), (100, 0))
-        rsp = sati.preprocessing.GuessInitRsp(image, 4, threshold=0.1,
-                                              seeds=seeds)
+    def test_scale_with_explicit_stats_1d(self):
+        """Test standardize() uses provided stats instead of computing them."""
+        a = np.arange(5.0)
+        mean, std = 3.0, 2.0
+        a_std, stats_out = sati.preprocessing.standardize(a, (mean, std))
+        np.testing.assert_allclose(a_std, (a - 3.0) / 2.0, rtol=1e-14)
+        self.assertEqual(stats_out[0], 3.0)
+        self.assertEqual(stats_out[1], 2.0)
 
-        np.testing.assert_equal(rsp.seeds[:3], seeds)
-        np.testing.assert_equal(rsp.guess, rsp_expected)
-        np.testing.assert_equal(rsp.image, image)
+    def test_scale_with_explicit_stats_2d(self):
+        """Test standardize() with explicit stats on 2D array."""
+        a = np.array([[0.0, 2.0, 4.0], [1.0, 3.0, 5.0]])
+        mean = np.array([2.0, 3.0])
+        std = np.array([1.0, 2.0])
+        a_std, stats_out = sati.preprocessing.standardize(a, (mean, std))
+        expected = (a - mean.reshape(-1, 1)) / std.reshape(-1, 1)
+        np.testing.assert_allclose(a_std, expected, rtol=1e-14)
+        np.testing.assert_allclose(stats_out[0], mean, rtol=1e-14)
+        np.testing.assert_allclose(stats_out[1], std, rtol=1e-14)
 
-        rsp._GuessInitRsp__test = True
-        rsp.show()
+    # --- PolynomialFeatures ---
+
+    def test_transform_degree1(self):
+        """Test PolynomialFeatures degree=1 returns (x, y) only."""
+        poly = sati.preprocessing.PolynomialFeatures(1)
+        pos = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
+        phi = poly.transform(pos)
+        phi_expected = np.vstack((pos[0], pos[1]))
+        np.testing.assert_allclose(phi, phi_expected, rtol=1e-14)
+
+    def test_transform_degree3(self):
+        """Test PolynomialFeatures degree=3 produces correct number of terms."""
+        # degree d → (d+2)(d+1)/2 - 1 features
+        poly = sati.preprocessing.PolynomialFeatures(3)
+        pos = np.arange(8).reshape(2, 4).astype(float)
+        phi = poly.transform(pos)
+        # degree=3: 9 terms (x,y,x2,xy,y2,x3,x2y,xy2,y3)
+        self.assertEqual(phi.shape[0], 9)
+        self.assertEqual(phi.shape[1], 4)

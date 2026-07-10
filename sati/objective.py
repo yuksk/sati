@@ -1,35 +1,46 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from . import distributions
+
 import sys
 
 import numpy as np
 
 
-def calc(dist, t_subtracted, prior=None):
-    """Calculate a value of objective function.
+def calc(
+    dist: distributions.Distribution,
+    t_subtracted: np.ndarray,
+    prior: distributions.VonMises | None = None,
+) -> float:
+    """Calculate a value of the objective function.
 
     Parameters
     ----------
     dist : a subclass of :class:`sati.distributions.Distribution`
         A distribution used in a model.
     t_subtracted : ``numpy.ndarray``
-        Subtracted one-dimensionalized image.
+        The flattened image with the model plane subtracted.
     prior : :class:`sati.distributions.VonMises`
         A prior distribution.
 
     Returns
     -------
-    float :
-        A value of objective function.
+    float
+        A value of the objective function.
     """
     likelihood_at_pixel = dist.fullpdf(t_subtracted).sum(axis=0)
-    np.place(likelihood_at_pixel, likelihood_at_pixel==0, sys.float_info.min)
+    np.place(likelihood_at_pixel, likelihood_at_pixel == 0, sys.float_info.min)
     if prior is None:
         return np.log(likelihood_at_pixel).sum()
     else:
-        return np.log(likelihood_at_pixel).sum() \
-                + prior.loglikelihood_at_pixel(dist.loc) * t_subtracted.size
+        return (
+            np.log(likelihood_at_pixel).sum()
+            + prior.loglikelihood_at_pixel(dist.loc) * t_subtracted.size
+        )
 
 
-class Objective():
+class Objective:
     """Class for an objective function.
 
     Parameters
@@ -48,7 +59,8 @@ class Objective():
         Objective function and its relative difference. Values are
         appended at each cycle of iterations.
     """
-    def __init__(self, maxiter, tol, verbose):
+
+    def __init__(self, maxiter: int, tol: float, verbose: bool) -> None:
         self.__tol, self.__verbose = tol, verbose
         self.value = []
         self.diff = []
@@ -60,17 +72,20 @@ class Objective():
         self.__lines = 7
         self.__index_width = int(np.trunc(np.log10(maxiter))) + 1
 
-    def __str__(self):
-        return f'iterations: {len(self.value)-1}\n' \
-               f'objective: {self.value[-1]:.{self.__precision[0]}e}'
+    def __str__(self) -> str:
+        return (
+            f"iterations: {len(self.value)-1}\n"
+            f"objective: {self.value[-1]:.{self.__precision[0]}e}"
+        )
 
-    def append(self, value):
-        """Append a value to the list of values and update list of differences.
+    def append(self, value: float) -> None:
+        """Append a value to the objective function history and update
+        the relative differences.
 
         Parameters
         ----------
         value : float
-            A value of an objective function.
+            A value of the objective function.
         """
         if len(self.diff) == 0 or value == 0:
             self.diff.append(np.nan)
@@ -81,32 +96,34 @@ class Objective():
         if self.__verbose:
             self.__update_console()
 
-    def isconverged(self):
+    def isconverged(self) -> bool:
         return self.diff[-1] < self.__tol
 
-    def __update_console(self):
+    def __update_console(self) -> None:
         def oneline(i):
             """Construct a line."""
-            linestr = ''
+            linestr = ""
             # If the objective decreases, change the character color.
             if i > 0 and self.value[i] < self.value[i - 1]:
-                linestr += '\033[32m'  # green
+                linestr += "\033[32m"  # green
             # Content of line
-            linestr += ' '.join([
-                f"{i:<{self.__index_width}}",
-                f"{self.value[i]:+.{self.__precision[0]}e}",
-                f"({self.diff[i]:.{self.__precision[1]}e})"])
+            linestr += " ".join(
+                [
+                    f"{i:<{self.__index_width}}",
+                    f"{self.value[i]:+.{self.__precision[0]}e}",
+                    f"({self.diff[i]:.{self.__precision[1]}e})",
+                ]
+            )
             # Revert the character color.
-            linestr += '\033[39m'
+            linestr += "\033[39m"
             return linestr
 
         if len(self.value) == 1:
             # Prepare lines in case the prompt is close to the bottom.
-            print('\n' * (self.__lines- 1))
+            print("\n" * (self.__lines - 1))
 
-        print(f"\033[{self.__lines}F", end='')
+        print(f"\033[{self.__lines}F", end="")
         L = len(self.value)
         nlines = min(L, self.__lines)
-        print('\n'.join([oneline(i) for i in range(L - nlines, L)]))
-        print('\n' * (self.__lines - nlines), end='')
-
+        print("\n".join([oneline(i) for i in range(L - nlines, L)]))
+        print("\n" * (self.__lines - nlines), end="")

@@ -1,18 +1,35 @@
 import numpy as np
 import scipy.optimize
+from typing import Callable
 
-
-"""The default of optimizer options. ``reduction`` is used not in
-``mimimize()`` but in the loop calling ``minimize()``. It's included
-here for the documentation purpose."""
+"""Default optimizer options. ``reduction`` is used not in
+``minimize()`` but in the outer loop that calls ``minimize()``.
+It is included here for documentation purposes."""
 options_default = {
-        'ftol': 1e-7, 'maxiter': 256, 'lr': 1e-3, 'betas': [0.9, 0.999],
-        'epsilon': 1e-8, 'reduction': 0.5}
+    "ftol": 1e-7,
+    "maxiter": 256,
+    "lr": 1e-3,
+    "betas": [0.9, 0.999],
+    "epsilon": 1e-8,
+    "reduction": 0.5,
+}
 
 
-def minimize(fun, x0, *, method='adam', jac,
-        options={'ftol': 1e-7, 'maxiter': 256, 'lr': 1e-3,
-                 'betas': [0.9, 0.999], 'epsilon': 1e-8, 'reduction': 0.5}):
+def minimize(
+    fun: Callable[[np.ndarray], float],
+    x0: np.ndarray,
+    *,
+    method: str = "adam",
+    jac: Callable[[np.ndarray], np.ndarray],
+    options: dict = {
+        "ftol": 1e-7,
+        "maxiter": 256,
+        "lr": 1e-3,
+        "betas": [0.9, 0.999],
+        "epsilon": 1e-8,
+        "reduction": 0.5,
+    }
+) -> scipy.optimize.OptimizeResult:
     """Minimization of scalar function of one or more variables.
 
     The parameters are similar to those of `scipy.optimize.minimize <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize>`_.
@@ -42,7 +59,9 @@ def minimize(fun, x0, *, method='adam', jac,
         * lr : ``float``, the learning rate.
         * ftol : ``float``, the fractional tolerance to stop the iteration.
         * maxiter : ``int``, the maximum number of iterations.
-        * reduction : ``float``, this value is multiplied to ``lr`` when the objective function is smaller than that of the last step in the main EM loop.
+        * reduction : ``float``, the factor by which ``lr`` is multiplied
+          when the objective function is smaller than that of the last step
+          in the main EM loop.
 
 
     Returns
@@ -53,7 +72,7 @@ def minimize(fun, x0, *, method='adam', jac,
         `scipy.optimize.OptimizeResult <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.OptimizeResult.html#scipy.optimize.OptimizeResult>`_ for more details.
 
     References
-    ---=------
+    ----------
     .. [1] Diederik P. Kingma, Jimmy Ba, "Adam: A Method for Stochastic
        Optimization", arXiv:1412.6980
     """
@@ -64,22 +83,23 @@ def minimize(fun, x0, *, method='adam', jac,
 
     x = np.copy(x0)
     obj0 = fun(x)
-    optimizer = _Adam(alpha=options['lr'], betas=options['betas'],
-                      epsilon=options['epsilon'])
+    optimizer = _Adam(
+        alpha=options["lr"], betas=options["betas"], epsilon=options["epsilon"]
+    )
 
-    for i in range(1, options['maxiter']):
+    for i in range(1, options["maxiter"]):
         g = jac(x)
         x -= optimizer.step(g, i)
         obj1 = fun(x)
-        if np.fabs((obj1 - obj0) / obj1) < options['ftol']:
+        if np.fabs((obj1 - obj0) / obj1) < options["ftol"]:
             break
         obj0 = obj1
 
-    result = {'x': x, 'success': True, 'fun': obj1, 'jac': g, 'nit': i}
+    result = {"x": x, "success": True, "fun": obj1, "jac": g, "nit": i}
     return scipy.optimize.OptimizeResult(result)
 
 
-class _Adam():
+class _Adam:
     """Class for Adam.
 
     Parameters
@@ -94,12 +114,18 @@ class _Adam():
     .. [1] Diederik P. Kingma, Jimmy Ba, "Adam: A Method for Stochastic
        Optimization", arXiv:1412.6980
     """
-    def __init__(self, alpha=1e-3, betas=[0.9, 0.999], epsilon=1e-8):
+
+    def __init__(
+        self,
+        alpha: float = 1e-3,
+        betas: list[float] = [0.9, 0.999],
+        epsilon: float = 1e-8,
+    ) -> None:
         self.alpha = alpha
         self.betas = betas
         self.epsilon = epsilon
 
-    def step(self, g, i):
+    def step(self, g: np.ndarray, i: int) -> np.ndarray:
         """Calculate a step of gradient ascent.
 
         Parameters
@@ -111,8 +137,8 @@ class _Adam():
 
         Returns
         -------
-        numpy.nudarray
-            A step at i-th iteration.
+        numpy.ndarray
+            A step at the i-th iteration.
         """
         if i == 1:
             self.__m, self.__v = np.zeros_like(g), np.zeros_like(g)
@@ -120,7 +146,6 @@ class _Adam():
         self.__m = self.betas[0] * self.__m + (1 - self.betas[0]) * g
         self.__v = self.betas[1] * self.__v + (1 - self.betas[1]) * g * g
 
-        hatm = self.__m / (1 - self.betas[0]**i)
-        hatv = self.__v / (1 - self.betas[1]**i)
+        hatm = self.__m / (1 - self.betas[0] ** i)
+        hatv = self.__v / (1 - self.betas[1] ** i)
         return self.alpha * hatm / (np.sqrt(hatv) + self.epsilon)
-

@@ -17,20 +17,14 @@ even in the presence of steps.
 
 Install
 -------
-You can install the package from the git repogitory using ``pip``
+You can install the package using ``pip``
 ::
 
   $ pip install sati
 
 Requirements
 ------------
-Sati requires the following dependencies:
-
-* python 3.8 or later
-* matplotlib
-* numexpr
-* numpy
-* scipy
+Sati requires python 3.11 or later.
 
 Reference
 ---------

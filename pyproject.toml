@@ -1,24 +1,30 @@
-[tool.poetry]
+[project]
 name = "sati"
-version = "1.0.0"
+version = "2.0.0"
 description = "Statistical analysis of topographic image"
-authors = ["Yuhki Kohsaka <yuhki.kohsaka@gmail.com>"]
-license = "MIT"
 readme = "README.rst"
-repository = "https://github.com/yuksk/sati/"
-documentation = "https://yuksk.github.io/sati/index.html"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "Yuhki Kohsaka", email = "kohsaka.yuhki.3j@kyoto-u.ac.jp" },
+]
+dependencies = [
+    "numpy>=2.3",
+    "scipy>=1.5.0",
+    "numexpr>=2.7.1",
+    "scikit-image>=0.19.3",
+]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-numpy = "^1.18.0"
-scipy = "^1.5.0"
-matplotlib = "^3.3.1"
-numexpr = "^2.7.1"
+[project.urls]
+Repository = "https://github.com/yuksk/sati/"
+Documentation = "https://yuksk.github.io/sati/index.html"
 
-[tool.poetry.dev-dependencies]
-coverage = {extras = ["toml"], version = "^5.2"}
-Sphinx = "^3.1.2"
-sphinx-rtd-theme = "^0.5.0"
+[dependency-groups]
+dev = [
+    "coverage[toml]>=5.2",
+    "sphinx>=3.1.2",
+    "sphinx-rtd-theme>=0.5.0",
+]
 
 [tool.coverage.run]
 source = ["sati"]
@@ -27,5 +33,5 @@ source = ["sati"]
 exclude_lines = ["except KeyboardInterrupt:"]
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
